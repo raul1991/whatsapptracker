@@ -1,6 +1,7 @@
 var tracker = (function(){
     var timeSpan = 0;
     var shouldSendRequest = false;
+    var url = "";
     // selectors for main chat's name and status
     var selectors = {
         name: "div#main>header>div:nth-child(2)>div:nth-child(1)>div>span",
@@ -36,13 +37,15 @@ var tracker = (function(){
     	return {name: name, status: status};
    };
 
-    var init = function() {
+    var init = function(config) {
+        var freq = config.freq || 1000;
+        var serverUrl = config.serverUrl || 'localhost:5000';
         console.log("Initialized the polling thread");
-        window.setInterval(pollThread, 1000);
+        window.setInterval(pollThread, freq);
     };
 
     var sendRequest = function (data) {
-        fetch('localhost:5000', {
+        fetch('http://localhost:5000/track/mum', {
             method: 'POST',
             body: JSON.stringify({
                 person: data['name'],
@@ -58,4 +61,4 @@ var tracker = (function(){
         init: init
     };
 })();
-tracker.init()
+tracker.init({serverUrl: 'localhost:5000', freq: 1000});

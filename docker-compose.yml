@@ -1,1 +1,47 @@
-# A container for grafana, prometheus and a flask server
+version: '3.7'
+services:
+  rest-api:
+    container_name: 'rest-api'
+    build: rest-api
+    restart: on-failure
+    ports:
+      - '5000:5000'
+    depends_on:
+      - prometheus
+      - grafana
+    networks:
+      tracker-network:
+
+  prometheus:
+    container_name: 'prometheus'
+    build: prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - grafana
+    networks:
+      tracker-network:
+
+  grafana:
+    container_name: 'grafana'
+    image: grafana/grafana:6.6.2
+    env_file:
+      - ./.env
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    volumes:
+      - "grafana-storage:/var/lib/grafana"
+    networks:
+      tracker-network:
+
+volumes:
+  grafana-storage:
+
+networks:
+  tracker-network:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
