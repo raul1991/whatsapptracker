@@ -6,7 +6,7 @@ A framework to track and visualise time spent on whatsapp by your friend
 - Clone the repository and run the compose file
 `docker-compose up -d`
 
-- Run chrome with CORS and CSP disabled.
+- Run chrome with CORS enabled and CSP disabled.
 
 - Open web.whatsapp.com in your browser
 
