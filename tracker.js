@@ -1,7 +1,6 @@
 var tracker = (function(){
     var timeSpan = 0;
     var shouldSendRequest = false;
-    var url = "";
     // selectors for main chat's name and status
     var selectors = {
         name: "div#main>header>div:nth-child(2)>div:nth-child(1)>div>span",
