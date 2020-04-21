@@ -1,4 +1,4 @@
-var tracker = (function(){
+var tracker = (function() {
     var timeSpan = 0;
     var shouldSendRequest = false;
     var url = "";
@@ -16,8 +16,7 @@ var tracker = (function(){
             timeSpan += 1;
             // a flag to tell if we tracked something or not
             shouldSendRequest = true;
-        }
-        else if (shouldSendRequest) {
+        } else if (shouldSendRequest) {
             sendRequest({
                 name: person.name,
                 timeSpan: timeSpan
@@ -31,16 +30,19 @@ var tracker = (function(){
         return person && person.status.indexOf("online") != -1;
     };
 
-   var getNodesBy = function(css) {
-       var matches = document.querySelectorAll(css);
-       return matches.length > 0 ? matches[0].innerHTML : null;
-   };
+    var getNodesBy = function(css) {
+        var matches = document.querySelectorAll(css);
+        return matches.length > 0 ? matches[0].innerHTML : null;
+    };
 
-   var getPersonInfo = function() {
+    var getPersonInfo = function() {
         var name = getNodesBy(selectors.name) || '';
-    	var status = getNodesBy(selectors.status) || 'offline';
-    	return {name: name, status: status};
-   };
+        var status = getNodesBy(selectors.status) || 'offline';
+        return {
+            name: name,
+            status: status
+        };
+    };
 
     var init = function(config) {
         var freq = config.freq || 1000;
@@ -49,8 +51,8 @@ var tracker = (function(){
         interval = window.setInterval(pollThread, freq);
     };
 
-    var sendRequest = function (data) {
-        fetch('http://localhost:5000/track/mum', {
+    var sendRequest = function(data) {
+        fetch('http://localhost:5000/track/' + data['name'], {
             method: 'POST',
             body: JSON.stringify({
                 person: data['name'],
@@ -71,5 +73,9 @@ var tracker = (function(){
         init: init,
         stop: stop
     };
-})();
-tracker.init({serverUrl: 'localhost:5000', freq: 1000});
+}
+)();
+tracker.init({
+    serverUrl: 'localhost:5000',
+    freq: 1000
+});

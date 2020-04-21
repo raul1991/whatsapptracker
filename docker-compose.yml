@@ -42,3 +42,6 @@ volumes:
 
 networks:
   tracker-network:
+    external:
+      name: br0a
+
