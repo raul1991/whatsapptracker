@@ -26,8 +26,28 @@ var tracker = (function() {
         }
     };
 
-    var isOnline = function(person) {
+    /**
+    * Tells if the chat's header says "typing"
+    * @param person object
+    */
+    var isTyping = function(person) {
+        return person && person.status.indexOf("typing") != -1;
+    };
+
+    /**
+    * Tells if the chat's header says "online"
+    * @param person object
+    */
+    var isJustOnline = function(person) {
         return person && person.status.indexOf("online") != -1;
+    };
+
+    /**
+    * Return true if a person is either typing or just online.
+    * @param person the person object
+    */
+    var isOnline = function(person) {
+        return person && (isJustOnline(person) || isTyping(person));
     };
 
     var getNodesBy = function(css) {

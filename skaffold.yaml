@@ -1,0 +1,35 @@
+apiVersion: skaffold/v1beta15
+kind: Config
+build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.IMAGE_NAME}}:v1.0.0"
+  artifacts:
+  - image: rest-api
+    context: ./rest-api
+  - image: grafana
+    context: ./grafana
+  - image: prometheus
+    context: ./prometheus
+  local:
+    push: true
+deploy:
+  kubectl:
+    manifests:
+     - kustomizer/minikube/deployments/*.yaml
+     - kustomizer/minikube/services/*.yaml
+     - kustomizer/minikube/configmaps/*.yaml
+     - kustomizer/minikube/volumes/pvc/*.yaml
+     - kustomizer/minikube/volumes/pv/*.yaml
+profiles:
+  - name: minikube
+    activation:
+      - kubeContext: minikube
+    deploy:
+      kubectl:
+        manifests:
+          - kustomizer/minikube/deployments/*.yaml
+          - kustomizer/minikube/services/*.yaml
+          - kustomizer/minikube/configmaps/*.yaml
+          - kustomizer/minikube/volumes/pvc/*.yaml
+          - kustomizer/minikube/volumes/pv/*.yaml

@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, request, Response
 from Tracker import Tracker
@@ -21,4 +22,4 @@ def metrics():
     return tracker.get_metrics()
 
 
-app.run(host='0.0.0.0', debug=True, port=5000)
+app.run(host='0.0.0.0', debug=True, port=os.environ.get("REST_API_PORT", "5000"))
