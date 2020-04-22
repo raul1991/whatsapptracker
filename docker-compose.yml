@@ -9,6 +9,8 @@ services:
     depends_on:
       - prometheus
       - grafana
+    env_file:
+      - .env
     networks:
       tracker-network:
 
@@ -21,6 +23,8 @@ services:
       - "9090:9090"
     depends_on:
       - grafana
+    env_file:
+      - .env
     networks:
       tracker-network:
 
@@ -28,7 +32,7 @@ services:
     container_name: 'grafana'
     build: grafana
     env_file:
-      - ./.env
+      - .env
     restart: on-failure
     ports:
       - "3000:3000"
