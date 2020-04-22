@@ -1,6 +1,6 @@
 # whatsapptracker
 A framework to track and visualise online activity of someone in your whatsapp network. Please note that
-this software does not endorse stalking or any other form of illegal activities. This was made with a anintention to learn things and not to invade anyone's privacy.
+this software does not endorse stalking or any other form of illegal activities. This was made with a an intention to learn things and not to invade anyone's privacy.
 
 # Will my data/chat be safe ?
 
