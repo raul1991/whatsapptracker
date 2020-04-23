@@ -108,9 +108,6 @@ spec:
       labels:
         app: grafana
     spec:
-      securityContext:
-        runAsUser: 472
-        fsGroup: 472
       volumes:
         - name: grafana-storage
           persistentVolumeClaim:

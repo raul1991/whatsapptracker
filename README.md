@@ -1,3 +1,13 @@
+# Important
+
+This is just a temp branch which can only run the whole thing using kustomizer
+installation because of some issue in grafana images above 5.1.
+In this you'll get everything but the dashboard. You have to create it manually
+using grafana and add metric ```online_time_span > 0``` in the query.
+
+You can then see the visualization. I'll make a fix in the master branch and remove
+this branch then.
+
 # whatsapptracker
 A framework to track and visualise online activity of someone in your whatsapp network. Please note that
 this software does not endorse stalking or any other form of illegal activities. This was made with a an intention to learn things and not to invade anyone's privacy.
