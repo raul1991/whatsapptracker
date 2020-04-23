@@ -1,0 +1,10 @@
+resources:
+  - ./minikube/deployments/prometheus.yaml
+  - ./minikube/deployments/rest-api.yaml
+  - ./minikube/deployments/grafana.yaml
+  - ./minikube/services/prometheus.yaml
+  - ./minikube/services/rest-api.yaml
+  - ./minikube/services/grafana.yaml
+  - ./minikube/volumes/pvc/pvc-grafana.yaml
+  - ./minikube/volumes/pv/pv-grafana.yaml
+  - ./minikube/configmaps/keys.yaml
