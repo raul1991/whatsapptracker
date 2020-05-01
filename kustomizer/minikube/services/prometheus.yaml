@@ -1,38 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: "2020-04-22T07:38:59Z"
   labels:
     app: prometheus
-  managedFields:
-  - apiVersion: v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:labels:
-          .: {}
-          f:app: {}
-      f:spec:
-        f:externalTrafficPolicy: {}
-        f:ports:
-          .: {}
-          k:{"port":9090,"protocol":"TCP"}:
-            .: {}
-            f:port: {}
-            f:protocol: {}
-            f:targetPort: {}
-        f:selector:
-          .: {}
-          f:app: {}
-        f:sessionAffinity: {}
-        f:type: {}
-    manager: kubectl
-    operation: Update
-    time: "2020-04-22T07:38:59Z"
   name: prometheus
-  namespace: default
-  resourceVersion: "8862"
-  selfLink: /api/v1/namespaces/default/services/prometheus
 spec:
   externalTrafficPolicy: Cluster
   ports:

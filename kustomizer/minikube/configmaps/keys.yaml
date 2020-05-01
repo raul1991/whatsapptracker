@@ -10,5 +10,4 @@ data:
 kind: ConfigMap
 metadata:
   name: env-variables
-  namespace: default
   selfLink: /api/v1/namespaces/default/configmaps/env-variables

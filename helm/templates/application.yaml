@@ -15,7 +15,7 @@ spec:
         app: prometheus
     spec:
       containers:
-      - image: armdocker.rnd.ericsson.se/sandbox/whatsapp-tracker/prometheus
+      - image: prometheus
         envFrom:
           - configMapRef:
               name: env-variables
@@ -40,7 +40,7 @@ spec:
         app: rest-api
     spec:
       containers:
-      - image: armdocker.rnd.ericsson.se/sandbox/whatsapp-tracker/rest-api
+      - image: rest-api
         envFrom:
           - configMapRef:
               name: env-variables
