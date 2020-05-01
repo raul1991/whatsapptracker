@@ -4,7 +4,6 @@ metadata:
   labels:
     app: prometheus
   name: prometheus
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -30,7 +29,6 @@ metadata:
   labels:
     app: rest-api
   name: rest-api
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -62,8 +60,6 @@ data:
 kind: ConfigMap
 metadata:
   name: env-variables
-  namespace: default
-
 ---
 apiVersion: v1
 data:
@@ -203,7 +199,6 @@ data:
 kind: ConfigMap
 metadata:
   name: whatsapp-dashboard
-  namespace: default
   labels:
     grafana_dashboard: "1"
 
@@ -223,7 +218,6 @@ data:
 kind: ConfigMap
 metadata:
   name: whatsapp-datasource
-  namespace: default
   labels:
     grafana_datasource: "1"
 
@@ -234,7 +228,6 @@ metadata:
   labels:
     app: grafana
   name: grafana
-  namespace: default
 spec:
   externalTrafficPolicy: Cluster
   ports:
@@ -252,7 +245,6 @@ metadata:
   labels:
     app: prometheus
   name: prometheus
-  namespace: default
 spec:
   ports:
   - port: 9090
@@ -269,7 +261,6 @@ metadata:
   labels:
     app: rest-api
   name: rest-api
-  namespace: default
 spec:
   ports:
   - nodePort: 32580
