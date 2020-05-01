@@ -33,6 +33,14 @@ Note: The above does not work well because grafana latest image has some problem
 
 `chmod +x ./setup.sh && docker-compose up -d`
 
+# End to end setup using helm
+- Clone
+- Update helm chart deps
+ `helm dep update`
+- Install the app. Run the command from the helm directory
+ `helm install .`
+- The steps to setup tracker.js remains the same. (See browser setup)
+
 ### Browser setup
 - Run chrome with CORS enabled (to send data to your backend) and CSP disabled (to be able to run tracker.js in dev console).
 
