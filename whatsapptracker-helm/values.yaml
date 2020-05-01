@@ -1,0 +1,6 @@
+grafana:
+  sidecar:
+    dashboards:
+      enabled: true
+    datasources:
+      enabled: true

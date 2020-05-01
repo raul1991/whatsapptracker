@@ -1,0 +1,308 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - image: armdocker.rnd.ericsson.se/sandbox/whatsapp-tracker/prometheus
+        envFrom:
+          - configMapRef:
+              name: env-variables
+        imagePullPolicy: IfNotPresent
+        name: prometheus
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rest-api
+  name: rest-api
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-api
+  template:
+    metadata:
+      labels:
+        app: rest-api
+    spec:
+      containers:
+      - image: armdocker.rnd.ericsson.se/sandbox/whatsapp-tracker/rest-api
+        envFrom:
+          - configMapRef:
+              name: env-variables
+        imagePullPolicy: IfNotPresent
+        name: rest-api
+
+---
+apiVersion: v1
+data:
+  GRAFANA_HOST: grafana
+  GRAFANA_PORT: "3000"
+  REST_API_HOST: rest-api
+  REST_API_PORT: "5000"
+  GF_SECURITY_ADMIN_PASSWORD: P@assword
+  PROMETHEUS_HOST: prometheus
+  PROMETHEUS_PORT: "9000"
+kind: ConfigMap
+metadata:
+  name: env-variables
+  namespace: default
+
+---
+apiVersion: v1
+data:
+  whatsapp-dashboard.json: |-
+    {
+          "annotations": {
+            "list": [
+              {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+              }
+            ]
+          },
+          "editable": true,
+          "gnetId": null,
+          "graphTooltip": 0,
+          "id": 1,
+          "links": [],
+          "panels": [
+            {
+              "aliasColors": {},
+              "bars": false,
+              "dashLength": 10,
+              "dashes": false,
+              "datasource": "prom1",
+              "fill": 7,
+              "fillGradient": 10,
+              "gridPos": {
+                "h": 10,
+                "w": 24,
+                "x": 0,
+                "y": 0
+              },
+              "hiddenSeries": false,
+              "id": 2,
+              "legend": {
+                "alignAsTable": false,
+                "avg": false,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": false,
+                "min": false,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": false
+              },
+              "lines": true,
+              "linewidth": 1,
+              "nullPointMode": "null",
+              "options": {
+                "dataLinks": []
+              },
+              "percentage": false,
+              "pointradius": 2,
+              "points": false,
+              "renderer": "flot",
+              "seriesOverrides": [],
+              "spaceLength": 10,
+              "stack": false,
+              "steppedLine": false,
+              "targets": [
+                {
+                  "expr": "online_time_span",
+                  "format": "time_series",
+                  "instant": false,
+                  "intervalFactor": 1,
+                  "refId": "A"
+                }
+              ],
+              "thresholds": [],
+              "timeFrom": null,
+              "timeRegions": [],
+              "timeShift": null,
+              "title": "Time vs Seconds spent online",
+              "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+              },
+              "transparent": true,
+              "type": "graph",
+              "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+              },
+              "yaxes": [
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1,
+                  "max": null,
+                  "min": null,
+                  "show": true
+                },
+                {
+                  "format": "short",
+                  "label": null,
+                  "logBase": 1024,
+                  "max": null,
+                  "min": null,
+                  "show": false
+                }
+              ],
+              "yaxis": {
+                "align": false,
+                "alignLevel": null
+              }
+            }
+          ],
+          "refresh": "5s",
+          "schemaVersion": 22,
+          "style": "dark",
+          "tags": [],
+          "templating": {
+            "list": []
+          },
+          "time": {
+            "from": "now-5h",
+            "to": "now"
+          },
+          "timepicker": {},
+          "timezone": "",
+          "title": "Whatsapp dashboard",
+          "uid": "qe6YUdlWz",
+          "version": 3
+        }
+kind: ConfigMap
+metadata:
+  name: whatsapp-dashboard
+  namespace: default
+  labels:
+    grafana_dashboard: "1"
+
+---
+apiVersion: v1
+data:
+  whatsapp-datasource.yaml: |-
+    datasources:
+    - name: 'prom1'
+      type: 'prometheus'
+      access: 'proxy'
+      org_id: 1
+      url: 'http://prometheus:9090'
+      is_default: true
+      version: 1
+      editable: true
+kind: ConfigMap
+metadata:
+  name: whatsapp-datasource
+  namespace: default
+  labels:
+    grafana_datasource: "1"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: grafana
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prometheus
+  name: prometheus
+  namespace: default
+spec:
+  ports:
+  - port: 9090
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: prometheus
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rest-api
+  name: rest-api
+  namespace: default
+spec:
+  ports:
+  - nodePort: 32580
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: rest-api
+  type: NodePort
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: grafana
+spec:
+  storageClassName: local
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/grafana"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grafana-pvc
+spec:
+  storageClassName: local
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

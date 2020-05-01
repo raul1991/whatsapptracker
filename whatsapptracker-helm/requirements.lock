@@ -1,0 +1,6 @@
+dependencies:
+- name: grafana
+  repository: https://kubernetes-charts.storage.googleapis.com
+  version: 5.0.13
+digest: sha256:c02518c38f066e5937fcf74816b512808010dcd275c5e2dea2d39f8d2cb30a5b
+generated: "2020-04-30T16:56:21.327845002+05:30"

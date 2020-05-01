@@ -1,0 +1,4 @@
+dependencies:
+  - name: grafana
+    repository: https://kubernetes-charts.storage.googleapis.com
+    version: 5.0.13
